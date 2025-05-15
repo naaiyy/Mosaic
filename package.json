@@ -1,5 +1,5 @@
 {
-	"name": "mosaic-cms",
+	"name": "mosaic",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
@@ -13,6 +13,8 @@
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^5.0.1",
+		"@pastapp/mosaic": "^0.1.14",
+		"@phosphor-icons/react": "^2.1.7",
 		"@radix-ui/react-accordion": "^1.2.10",
 		"@radix-ui/react-alert-dialog": "^1.1.13",
 		"@radix-ui/react-aspect-ratio": "^1.1.6",
@@ -54,6 +56,7 @@
 		"react-hook-form": "^7.56.3",
 		"react-resizable-panels": "^3.0.2",
 		"recharts": "^2.15.3",
+		"sass": "^1.88.0",
 		"sonner": "^2.0.3",
 		"tailwind-merge": "^3.3.0",
 		"vaul": "^1.1.2",
