@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
-import { type ReactNode } from 'react';
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import type { ReactNode } from "react";
 
 // Simple props definition with children and any additional props
 type ThemeProviderProps = {
   children: ReactNode;
-  [key: string]: any; // Allow any additional props to be passed through
+  // Use a more specific type instead of any
+  [key: string]: ReactNode | string | boolean | undefined;
 };
 
 /**
