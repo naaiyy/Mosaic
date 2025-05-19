@@ -25,9 +25,24 @@ interface ExtendedMosaicPost extends MosaicPost {
 // Adapter function to convert MosaicPost to BlogPost format
 function adaptPostsToMosaicFormat(posts: MosaicPost[]): BlogPost[] {
   return posts.map((post) => {
-    // Cast to extended type and default empty destinations array if none provided
+    // Cast to extended type and ensure destinations is always an array
     const extendedPost = post as ExtendedMosaicPost;
-    const destinations = extendedPost.publishDestinations || [];
+    // Handle different possible formats of publishDestinations
+    let destinations = [];
+    if (extendedPost.publishDestinations) {
+      if (Array.isArray(extendedPost.publishDestinations)) {
+        destinations = extendedPost.publishDestinations;
+      } else if (typeof extendedPost.publishDestinations === 'string') {
+        try {
+          // Attempt to parse if it's a JSON string
+          const parsed = JSON.parse(extendedPost.publishDestinations);
+          destinations = Array.isArray(parsed) ? parsed : [];
+        } catch (e) {
+          console.warn('Could not parse publishDestinations string:', e);
+          destinations = [];
+        }
+      }
+    }
 
     // Create a properly typed BlogPost object
     const blogPost: BlogPost = {
@@ -69,13 +84,13 @@ function adaptPostsToMosaicFormat(posts: MosaicPost[]): BlogPost[] {
 
 // Create Mosaic configuration
 const mosaicConfig = createMosaicConfig({
-  apiUrl: process.env.NEXT_PUBLIC_MOSAIC_API_URL || "http://localhost:3001/api",
+  // Point to the correct PAST API running on port 3000
+  apiUrl: process.env.NEXT_PUBLIC_MOSAIC_API_URL || "http://localhost:3000/api/v1",
   apiKey: process.env.MOSAIC_API_KEY,
   site: {
     domain: "example.com",
   },
-  // Auto-register routes
-  autoDetectRoutes: true,
+  autoDetectRoutes: false,
 });
 
 // Server action to fetch posts
@@ -83,18 +98,28 @@ async function getBlogPosts(page = 1, limit = 12) {
   "use server";
 
   try {
-    // Use the server-side getPosts function directly
+    // Log the configuration and request details
+    console.log("[DEBUG] Mosaic config:", JSON.stringify({
+      apiUrl: mosaicConfig.apiUrl,
+      autoDetectRoutes: mosaicConfig.autoDetectRoutes,
+      site: mosaicConfig.site,
+    }));
+    console.log("[DEBUG] Request params:", JSON.stringify({ page, limit, path: "/blog" }));
+
+    // Try with path parameter explicitly set
     const response = await getPosts(mosaicConfig, {
       page,
       limit,
+      path: "/blog",
     });
 
+    console.log("[DEBUG] Response success:", !!response?.posts);
     return {
       posts: response.posts,
       pagination: response.pagination,
     };
   } catch (error) {
-    console.error("Failed to fetch posts:", error);
+    console.error("[DEBUG] Error details:", error);
     throw new Error("Failed to load blog posts");
   }
 }

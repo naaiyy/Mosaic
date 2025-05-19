@@ -12,8 +12,8 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1(react-hook-form@7.56.3(react@19.1.0))
       '@pastapp/mosaic':
-        specifier: ^0.1.14
-        version: 0.1.14(@tiptap/core@2.12.0(@tiptap/pm@2.12.0))(@tiptap/extension-image@2.12.0(@tiptap/core@2.12.0(@tiptap/pm@2.12.0)))(@tiptap/pm@2.12.0)(next@15.3.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.88.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: ^0.1.15
+        version: 0.1.15(@tiptap/core@2.12.0(@tiptap/pm@2.12.0))(@tiptap/extension-image@2.12.0(@tiptap/core@2.12.0(@tiptap/pm@2.12.0)))(@tiptap/pm@2.12.0)(next@15.3.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.88.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@phosphor-icons/react':
         specifier: ^2.1.7
         version: 2.1.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -536,8 +536,8 @@ packages:
     resolution: {integrity: sha512-dfUnCxiN9H4ap84DvD2ubjw+3vUNpstxa0TneY/Paat8a3R4uQZDLSvWjmznAY/DoahqTHl9V46HF/Zs3F29pg==}
     engines: {node: '>= 10.0.0'}
 
-  '@pastapp/mosaic@0.1.14':
-    resolution: {integrity: sha512-19B2K0eybS/u1H4DkvfuiWDHn1l0N/XqqPjwEWMFAriuOglTzNZ7cOxWeX7rdQ0yqpgEHTFGH0wQLk3WYHh+eg==}
+  '@pastapp/mosaic@0.1.15':
+    resolution: {integrity: sha512-N+Do9hmk1loLGGx2BfiXLrz9BBK7wqRd9d3ozsvFtFk3ZyyOlAvNH8Hzqu7AAtpYIzTJj+29cmMY+B5bbFcgtA==}
     peerDependencies:
       next: ^14.0.0 || ^15.0.0
       react: ^18.0.0 || ^19.0.0
@@ -2430,7 +2430,7 @@ snapshots:
       '@parcel/watcher-win32-x64': 2.5.1
     optional: true
 
-  '@pastapp/mosaic@0.1.14(@tiptap/core@2.12.0(@tiptap/pm@2.12.0))(@tiptap/extension-image@2.12.0(@tiptap/core@2.12.0(@tiptap/pm@2.12.0)))(@tiptap/pm@2.12.0)(next@15.3.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.88.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@pastapp/mosaic@0.1.15(@tiptap/core@2.12.0(@tiptap/pm@2.12.0))(@tiptap/extension-image@2.12.0(@tiptap/core@2.12.0(@tiptap/pm@2.12.0)))(@tiptap/pm@2.12.0)(next@15.3.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.88.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@phosphor-icons/react': 2.1.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@tiptap/extension-highlight': 2.12.0(@tiptap/core@2.12.0(@tiptap/pm@2.12.0))
