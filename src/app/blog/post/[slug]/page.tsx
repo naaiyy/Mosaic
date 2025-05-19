@@ -1,13 +1,15 @@
-import { notFound } from "next/navigation";
 import { ContentSection, PageHeader } from "@/components/layout/app-layout";
-import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
+import SanitizedHtml from "@/components/sanitized-html";
 import { getPost } from "@pastapp/mosaic";
-import Image from "next/image";
 import { createMosaicConfig } from "@pastapp/mosaic";
+import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
+import Image from "next/image";
+import { notFound } from "next/navigation";
 
 // Create Mosaic configuration
 const mosaicConfig = createMosaicConfig({
-  apiUrl: process.env.NEXT_PUBLIC_MOSAIC_API_URL || "http://localhost:3000/api/v1",
+  apiUrl:
+    process.env.NEXT_PUBLIC_MOSAIC_API_URL || "http://localhost:3000/api/v1",
   apiKey: process.env.MOSAIC_API_KEY,
   site: {
     domain: "example.com",
@@ -20,8 +22,19 @@ async function getBlogPost(slug: string) {
   "use server";
 
   try {
+    // Log request details for debugging
+    console.log(`[DEBUG] Fetching post with slug: ${slug}`);
+    console.log(`[DEBUG] API URL: ${mosaicConfig.apiUrl}/blog/${slug}`);
+
     // Use the server-side getPost function
     const response = await getPost(mosaicConfig, slug);
+
+    // Debug log the response
+    console.log(`[DEBUG] Post found: ${!!response?.post}`);
+    if (!response?.post) {
+      console.log(`[DEBUG] Post not found with slug: ${slug}`);
+    }
+
     return response;
   } catch (error) {
     console.error("Failed to fetch post:", error);
@@ -38,10 +51,45 @@ export default async function BlogPostPage({
   const resolvedParams = await params;
   const { slug } = resolvedParams;
 
-  const { post } = await getBlogPost(slug);
+  // Fetch the post data
+  const response = await getBlogPost(slug);
+  const { post } = response;
 
   if (!post) {
-    return notFound();
+    // Provide a more helpful UI instead of just showing the default 404 page
+    return (
+      <>
+        <PageHeader
+          title="Post Not Found"
+          backLink="/blog"
+          backLinkLabel="Back to blog"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2 inline-block" />
+        </PageHeader>
+
+        <ContentSection>
+          <div className="max-w-4xl mx-auto text-center py-12">
+            <h1 className="text-3xl font-bold mb-4 text-destructive">
+              Post Not Found
+            </h1>
+            <p className="text-lg mb-6">
+              We couldn't find a blog post with the slug:{" "}
+              <code className="bg-muted px-2 py-1 rounded">{slug}</code>
+            </p>
+            <p className="text-muted-foreground mb-8">
+              This could be because the post doesn't exist, has been removed, or
+              the URL is incorrect.
+            </p>
+            <a
+              href="/blog"
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+            >
+              Return to Blog
+            </a>
+          </div>
+        </ContentSection>
+      </>
+    );
   }
 
   // Parse content if it's a string
@@ -56,11 +104,7 @@ export default async function BlogPostPage({
 
   return (
     <>
-      <PageHeader
-        title="Blog"
-        backLink="/blog"
-        backLinkLabel="Back to blog"
-      >
+      <PageHeader title="Blog" backLink="/blog" backLinkLabel="Back to blog">
         <ArrowLeft className="h-4 w-4 mr-2 inline-block" />
       </PageHeader>
 
@@ -100,7 +144,7 @@ export default async function BlogPostPage({
           {/* Render the content */}
           <div className="prose prose-lg max-w-none dark:prose-invert">
             {typeof content === "string" ? (
-              <div dangerouslySetInnerHTML={{ __html: content }} />
+              <SanitizedHtml html={content} />
             ) : (
               <div className="p-4 border border-muted rounded-md">
                 <p>Content preview:</p>

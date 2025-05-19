@@ -32,13 +32,13 @@ function adaptPostsToMosaicFormat(posts: MosaicPost[]): BlogPost[] {
     if (extendedPost.publishDestinations) {
       if (Array.isArray(extendedPost.publishDestinations)) {
         destinations = extendedPost.publishDestinations;
-      } else if (typeof extendedPost.publishDestinations === 'string') {
+      } else if (typeof extendedPost.publishDestinations === "string") {
         try {
           // Attempt to parse if it's a JSON string
           const parsed = JSON.parse(extendedPost.publishDestinations);
           destinations = Array.isArray(parsed) ? parsed : [];
         } catch (e) {
-          console.warn('Could not parse publishDestinations string:', e);
+          console.warn("Could not parse publishDestinations string:", e);
           destinations = [];
         }
       }
@@ -85,7 +85,8 @@ function adaptPostsToMosaicFormat(posts: MosaicPost[]): BlogPost[] {
 // Create Mosaic configuration
 const mosaicConfig = createMosaicConfig({
   // Point to the correct PAST API running on port 3000
-  apiUrl: process.env.NEXT_PUBLIC_MOSAIC_API_URL || "http://localhost:3000/api/v1",
+  apiUrl:
+    process.env.NEXT_PUBLIC_MOSAIC_API_URL || "http://localhost:3000/api/v1",
   apiKey: process.env.MOSAIC_API_KEY,
   site: {
     domain: "example.com",
@@ -99,12 +100,18 @@ async function getBlogPosts(page = 1, limit = 12) {
 
   try {
     // Log the configuration and request details
-    console.log("[DEBUG] Mosaic config:", JSON.stringify({
-      apiUrl: mosaicConfig.apiUrl,
-      autoDetectRoutes: mosaicConfig.autoDetectRoutes,
-      site: mosaicConfig.site,
-    }));
-    console.log("[DEBUG] Request params:", JSON.stringify({ page, limit, path: "/blog" }));
+    console.log(
+      "[DEBUG] Mosaic config:",
+      JSON.stringify({
+        apiUrl: mosaicConfig.apiUrl,
+        autoDetectRoutes: mosaicConfig.autoDetectRoutes,
+        site: mosaicConfig.site,
+      }),
+    );
+    console.log(
+      "[DEBUG] Request params:",
+      JSON.stringify({ page, limit, path: "/blog" }),
+    );
 
     // Try with path parameter explicitly set
     const response = await getPosts(mosaicConfig, {
